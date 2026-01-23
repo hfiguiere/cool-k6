@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Collabora Productivity",
@@ -15,5 +16,10 @@
     "morgan": "~1.9.1",
     "@xmldom/xmldom": "^0.8.0",
     "xpath": "0.0.32"
+  },
+  "devDependencies": {
+    "webpack": "^5",
+    "webpack-cli": "^6.0.1",
+    "webpack-glob-entries": "^1.0.1"
   }
 }
