@@ -8,9 +8,13 @@ import fs from "fs";
 import http from 'http';
 import https from 'https';
 import {env} from 'process';
+import express from 'express';
 
 let port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
+
+let static_dir = new URL('../html', import.meta.url);
+app.use(express.static(static_dir.pathname));
 
 let server;
 let proto;

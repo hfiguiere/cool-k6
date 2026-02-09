@@ -19,7 +19,7 @@ export default async function () {
 
     // Get the Collabora Online iframe.
     // XXX this is wrong.
-    http.get(http.url`${wopiClient.url}?WOPISrc=${encodeURIComponent(wopiSrc)}`);
+    http.get(http.url`${wopiClient}?WOPISrc=${encodeURIComponent(wopiSrc)}`);
 
     // Sleep for 1 second to simulate real-world usage
     sleep(1);

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Collabora Online Integration</title>
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+  <script src="javascripts/wopi.js"></script>
+
+  <div class="vbox">
+  <form action="" method="get" target="" id="collabora-online-server-form">
+    <div class="vbox">
+      <div>
+        <label for="collabora-online-server"><b>Collabora Online Server</b></label>
+        <input type="text" id="collabora-online-server" name="collabora-online-server" />
+        <input type="submit" name="submit" value="Load Collabora Online" />
+      </div>
+  </form>
+<div style="display: none">
+  <form action="" enctype="multipart/form-data" method="post" target="collabora-online-viewer" id="collabora-submit-form">
+    <input name="css_variables" value="" type="hidden" id="css-variables"/>
+    <input name="ui_defaults" value="" type="hidden" id="ui-defaults"/>
+    <input name="access_token" value="" type="hidden" id="access-token"/>
+    <input type="submit" value="" />
+  </form>
+</div>
+
+<iframe id="collabora-online-viewer" name="collabora-online-viewer" height=1000 class="vbox" allow="clipboard-read *; clipboard-write *">
+</iframe>
+
+</div>
+<script type="text/javascript" src="javascripts/jquery-3.5.1.js"></script>
+
+<script type="text/javascript">
+
+let locationOrigin = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
+let scheme = window.location.protocol;  // http: | https:
+
+$("#collabora-online-server").val(scheme + "//127.0.0.1:9980");
+
+$("#collabora-online-server-form").submit(function(event) {
+  event.preventDefault();
+  let wopiClientHost = $("#collabora-online-server").val();
+  if (!wopiClientHost) {
+    alert('No server address entered');
+    return;
+  }
+  if (!wopiClientHost.startsWith('http')) {
+    alert('Warning! You have to specify the scheme protocol too (http|https) for the server address.')
+    return;
+  }
+  if (!wopiClientHost.startsWith(scheme + '//')) {
+    alert('Collabora Online server address scheme does not match the current page url scheme');
+    return;
+  }
+
+  let wopiSrc = locationOrigin + 'wopi/files/1';
+  $.getJSON("collaboraUrl?server=" + wopiClientHost)
+    .done(function( resp ) {
+      let wopiClientUrl = resp['url'];
+      let accessToken =  resp['token'];
+      let wopiUrl = wopiClientUrl + 'WOPISrc=' + encodeURIComponent(wopiSrc);
+      $('#collabora-submit-form').attr('action', wopiUrl)
+      $('#access-token').attr('value', accessToken);
+      $('#collabora-submit-form').submit();
+    })
+    .fail(function( jqxhr, textStatus, error ) {
+      let err = textStatus + ", " + error;
+      console.log( "Request Failed: " + err );
+      alert('Not possible to retrieve the complete Collabora Online url');
+    });
+})
+</script>
+
+</body>
+
+</html>
