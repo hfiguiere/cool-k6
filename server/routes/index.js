@@ -57,5 +57,7 @@ router.get('/collaboraUrl', (req, res) => {
             res.status(404).send('Request error: ' + err);
             console.log('Request error: ' + err.message);
         });
+    }).on('error', err => {
+        res.status(404).send('Request error: ' + err);
     });
 });
