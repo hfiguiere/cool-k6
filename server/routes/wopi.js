@@ -1,7 +1,11 @@
 import express from 'express';
+import * as fs from 'node:fs/promises';
+import path from 'node:path';
 
 let router = express.Router();
 export default router;
+
+import files from './files.json' with { type: 'json' };
 
 /* *
  *  wopi CheckFileInfo endpoint
@@ -12,18 +16,34 @@ export default router;
  *  The CheckFileInfo wopi endpoint is triggered by a GET request at
  *  https://HOSTNAME/wopi/files/<document_id>
  */
-router.get('/files/:fileId', (req, res) => {
-	console.log('file id: ' + req.params.fileId);
-	// test.txt is just a fake text file
-	// the Size property is the length of the string
-	// returned by the wopi GetFile endpoint
+router.get('/files/:fileId', async (req, res) => {
+    console.log('file id: ' + req.params.fileId);
+    let fileEntry = files[req.params.fileId];
+    if (fileEntry?.path) {
+        let filename = fileEntry.path;
+        let stats = await fs.stat(filename);
+
 	res.json({
-		BaseFileName: 'test.txt',
-		Size: 11,
-		UserId: 1,
-		UserCanWrite: true,
-		EnableInsertRemoteImage: true,
+	    BaseFileName: path.basename(filename),
+	    Size: stats.size,
+	    UserId: 1,
+	    UserCanWrite: !fileEntry.readonly,
+	    EnableInsertRemoteImage: true,
 	});
+
+        return;
+    }
+    console.log(`file ${req.params.fileId} not found`);
+    // test.txt is just a fake text file
+    // the Size property is the length of the string
+    // returned by the wopi GetFile endpoint
+    res.json({
+	BaseFileName: 'test.txt',
+	Size: 11,
+	UserId: 1,
+	UserCanWrite: true,
+	EnableInsertRemoteImage: true,
+    });
 });
 
 /* *
@@ -33,13 +53,22 @@ router.get('/files/:fileId', (req, res) => {
  *  The GetFile wopi endpoint is triggered by a request with a GET verb at
  *  https://HOSTNAME/wopi/files/<document_id>/contents
  */
-router.get('/files/:fileId/contents', (req, res) => {
-	// we just return the content of a fake text file
-	// in a real case you should use the file id
-	// for retrieving the file from the storage and
-	// send back the file content as response
-	const fileContent = 'Hello world!';
-	res.send(fileContent);
+router.get('/files/:fileId/contents', async (req, res) => {
+    let fileEntry = files[req.params.fileId];
+    if (fileEntry?.path) {
+        let filename = fileEntry.path;
+
+        let fileContent = await fs.readFile(filename);
+        res.send(fileContent);
+        return;
+    }
+
+    // we just return the content of a fake text file
+    // in a real case you should use the file id
+    // for retrieving the file from the storage and
+    // send back the file content as response
+    const fileContent = 'Hello world!';
+    res.send(fileContent);
 });
 
 /* *

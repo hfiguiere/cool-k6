@@ -15,6 +15,10 @@
       <div>
         <label for="collabora-online-server"><b>Collabora Online Server</b></label>
         <input type="text" id="collabora-online-server" name="collabora-online-server" />
+        <br>
+        <label for="wopi-file-id"><b>File</b></label>
+        <input type="text" id="wopi-file-id" name="wopi-file-id" value="1" />
+        <br>
         <input type="submit" name="submit" value="Load Collabora Online" />
       </div>
   </form>
@@ -53,7 +57,8 @@
             return;
         }
 
-        let wopiSrc = locationOrigin + 'wopi/files/1';
+        let wopiFileId = document.querySelector('#wopi-file-id').value;
+        let wopiSrc = `${locationOrigin}wopi/files/${wopiFileId}`;
         try {
             let resp = await fetch("collaboraUrl?server=" + wopiClientHost);
             if (resp.ok) {
