@@ -9,6 +9,9 @@
     "server": "./server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "engines": {
+    "node": ">=20.10"
+  },
   "author": "Collabora Productivity",
   "license": "MPL-2.0",
   "dependencies": {
