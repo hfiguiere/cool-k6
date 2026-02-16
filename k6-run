@@ -1,0 +1,5 @@
+#!/bin/sh
+
+p=`dirname $0`
+
+exec $p/k6-wrap run --vus 1 "$@"

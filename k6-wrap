@@ -1,0 +1,8 @@
+#!/bin/sh
+
+docker run -v $PWD:/app:Z \
+       -w /app --rm -i \
+       -e WOPI_URL=$WOPI_URL \
+       -e WOPI_HOST=$WOPI_HOST \
+       grafana/k6:master-with-browser \
+       "$@"
