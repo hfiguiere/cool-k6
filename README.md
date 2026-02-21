@@ -64,6 +64,11 @@ docker run -v $PWD:/app:Z \
        "$@"
 ```
 
+`k6-wrap` is a convenient wrapper to run k6 using docker.
+
+`k6-run` uses `k6-wrap` to preform the `run` command from k6. It shows
+how to use the wrapper for other purposes.
+
 ### Other options
 
 `--insecure-skip-tls-verify` is necessary if you use self-signed

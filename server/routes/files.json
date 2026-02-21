@@ -1,6 +1,12 @@
 {
     "2": {
         "path": "documents/writer-large.fodt",
-        "readonly": true
+        "readonly": false,
+        "wopi": {
+	    "EnableInsertRemoteImage": true,
+            "DisableInsertLocalImage": true,
+            "HidePrintOption": true,
+            "HideSaveOption": false
+        }
     }
 }

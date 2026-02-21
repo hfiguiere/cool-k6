@@ -2,9 +2,9 @@ import http from 'k6/http';
 import exec from 'k6/execution';
 import { browser } from 'k6/browser';
 import { sleep, check, fail } from 'k6';
+import { Trend } from 'k6/metrics';
 
 import { getWopiClientUrl, getWopiSrc } from '../lib/wopi_discovery.js';
-import { Trend } from 'k6/metrics';
 
 export const options = {
     insecureSkipTLSVerify: true,

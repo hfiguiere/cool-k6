@@ -23,13 +23,14 @@ router.get('/files/:fileId', async (req, res) => {
         let filename = fileEntry.path;
         let stats = await fs.stat(filename);
 
-	res.json({
+        let wopi = Object.assign({
 	    BaseFileName: path.basename(filename),
 	    Size: stats.size,
 	    UserId: 1,
 	    UserCanWrite: !fileEntry.readonly,
-	    EnableInsertRemoteImage: true,
-	});
+	}, fileEntry.wopi);
+
+	res.json(wopi);
 
         return;
     }
@@ -83,8 +84,7 @@ router.post('/files/:fileId/contents', (req, res) => {
 	// to check that saving has triggered this wopi endpoint
 	console.log('wopi PutFile endpoint');
 	if (req.body) {
-		console.dir(req.body);
-		console.log(req.body.toString());
+		console.log(req.body.toString().length);
 		res.sendStatus(200);
 	} else {
 		console.log('Not possible to get the file content.');
