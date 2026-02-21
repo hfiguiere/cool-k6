@@ -4,17 +4,19 @@ A K6 based test suite for Collabora Online
 
 ## Adding test
 
-Add test to the src directory. File must end in `-test.js`.
+Add test to the `src/` directory. Files implementing tests must end in
+`-test.js`.
 
 Build the bundles with `npm run build`. The targets are in `dist/`
-ready to run. This uses webpack under the hood.
+ready to run. This uses webpack under the hood and the JavaScript
+dialect is ES6.
 
 ## WOPI Host
 
 A WOPI Host (server) is included in the `server` directory. It's in
 pure NodeJS. `npm run server` will start it bound to port 3000.
 
-Running the server require Node 20.10
+Running the server require Node 20.10 or later.
 
 ### Configuring files
 
@@ -33,6 +35,8 @@ of the property, the file is server in editing mode.
 
 We default to use the Docker image for k6 since it's not carried by
 most distributions. But you can adapt this to other methods.
+
+This is currently tested with k6 version 1.5.x.
 
 ### Environment
 
@@ -66,7 +70,7 @@ docker run -v $PWD:/app:Z \
 
 `k6-wrap` is a convenient wrapper to run k6 using docker.
 
-`k6-run` uses `k6-wrap` to preform the `run` command from k6. It shows
+`k6-run` uses `k6-wrap` to perform the `run` command from k6. It shows
 how to use the wrapper for other purposes.
 
 ### Other options
