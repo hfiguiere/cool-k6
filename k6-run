@@ -2,4 +2,20 @@
 
 p=`dirname $0`
 
-exec $p/k6-wrap run --vus 1 "$@"
+# If not set to zero we'll tell to skip TLS
+SKIP_TLS_VERIFY=0
+# This is used by Node. If it is set to "0" we'll disable TLS
+# verification. This insecure mode allow using test environments.
+if test "$NODE_TLS_REJECT_UNAUTHORIZED" == "0"; then
+    SKIP_TLS_VERIFY=1
+fi
+
+options=
+
+if test $SKIP_TLS_VERIFY -ne 0; then
+    options="$options --insecure-skip-tls-verify"
+fi
+
+exec $p/k6-wrap run --vus 1 \
+     $options \
+     "$@"

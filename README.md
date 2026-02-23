@@ -63,7 +63,6 @@ docker run -v $PWD:/app:Z \
        -e WOPI_URL=$WOPI_URL \
        -e WOPI_HOST=$WOPI_HOST \
        grafana/k6:master-with-browser -v run --vus 1 \
-       --insecure-skip-tls-verify \
        --summary-mode=compact \
        "$@"
 ```
@@ -79,6 +78,9 @@ how to use the wrapper for other purposes.
 certificates. Make sure the Collabora Online server also accept
 them. Or use proper certificates everywhere.
 
+The `k6-run` wrapper will detect `NODE_TLS_REJECT_UNAUTHORIZED` as
+used by Node. If it is setp to `0`, the script will add the above
+options accordingly.
 
 ## License
 
