@@ -38,7 +38,7 @@
   let locationOrigin = window.location.href.substring(0, window.location.href.lastIndexOf('/')) + '/';
   let scheme = window.location.protocol;  // http: | https:
 
-  document.querySelector('#collabora-online-server').value = scheme + "//127.0.0.1:9980";
+  document.querySelector('#collabora-online-server').value = scheme + '//127.0.0.1:9980';
 
   document.querySelector('#collabora-online-server-form')
     .addEventListener('submit', async function(event) {
@@ -60,7 +60,7 @@
         let wopiFileId = document.querySelector('#wopi-file-id').value;
         let wopiSrc = `${locationOrigin}wopi/files/${wopiFileId}`;
         try {
-            let resp = await fetch("collaboraUrl?server=" + wopiClientHost);
+            let resp = await fetch('collaboraUrl?server=' + wopiClientHost);
             if (resp.ok) {
                 let payload = await resp.json();
                 let wopiClientUrl = payload['url'];
