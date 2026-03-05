@@ -14,6 +14,16 @@ ready to run. This uses webpack under the hood.
 A WOPI Host (server) is included in the `server` directory. It's in
 pure NodeJS. `npm run server` will start it bound to port 3000.
 
+Set environment variables `SSL_KEY_FILE` and `SSL_CRT_FILE` to point to certificates for this domain to enable testing in https.
+
+```
+cd server
+openssl req -x509 -newkey rsa:4096 -keyout npm-server-key.pem -out npm-server-cert.pem -sha256 -days 3650 -nodes -subj "/C=XX/ST=StateName/L=CityName/O=CompanyName/OU=CompanySectionName/CN=CommonNameOrHostname"
+export SSL_KEY_FILE=`pwd`/npm-server-key.pem
+export SSL_CRT_FILE=`pwd`/npm-server-cert.pem
+npm run server
+```
+
 Running the server require Node 20.10
 
 ### Configuring files
