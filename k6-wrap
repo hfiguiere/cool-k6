@@ -1,5 +1,26 @@
 #!/bin/sh
 
+if [[ -z "${WOPI_URL}" ]]; then
+    WOPI_URL="https://localhost:9981"
+    echo "Using default WOPI_URL $WOPI_URL"
+fi
+
+if ! curl --output /dev/null --silent --insecure --head --fail "${WOPI_URL}"
+then
+       echo WOPI_URL $i is down.
+       exit -1
+fi
+
+if [[ -z "${WOPI_HOST}" ]]; then
+    WOPI_HOST="http://localhost:3000"
+    echo "Using default WOPI_HOST $WOPI_HOST"
+fi
+if ! curl --output /dev/null --silent --insecure --head --fail "${WOPI_HOST}"
+then
+       echo WOPI_HOST $i is down.
+       exit -1
+fi
+
 docker run -v $PWD:/app:Z \
        -w /app --rm -i \
        -e WOPI_URL=$WOPI_URL \
