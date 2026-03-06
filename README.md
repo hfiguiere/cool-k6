@@ -23,7 +23,9 @@ Running the server require Node 20.10 or later.
 You can configure files to serve from the WOPI Host. This is done by
 adding an entry to the JSON file `./server/routes/files.json`.
 
-It's a dictionary (JS object) where the key is the file id as passed in the WOPI source URL, and entries contain at least a `path` (relative to the current working directory or absolute).
+It's a dictionary (JS object) where the key is the file id as passed
+in the WOPI source URL, and entries contain at least a `path`
+(relative to the current working directory or absolute).
 
 There are the various fields for an entry:
 
@@ -69,8 +71,15 @@ docker run -v $PWD:/app:Z \
 
 `k6-wrap` is a convenient wrapper to run k6 using docker.
 
-`k6-run` uses `k6-wrap` to perform the `run` command from k6. It shows
-how to use the wrapper for other purposes.
+`k6-run` uses `k6-wrap` to perform the `run` command from k6. You can
+use it as a base to learn how to use the wrapper for other purposes.
+
+The tests are webpacked into the `dist/` directory. To run a test
+using `k6-wrap`, use the following command:
+
+```shell
+./k6-run dist/cool-test.js
+```
 
 ### Other options
 
