@@ -33,6 +33,10 @@ There are the various fields for an entry:
 - `readonly`: If true the file is served in readonly mode. In absence
 of the property, the file is server in editing mode.
 
+A key with an empty object return just a "Hello world" strigs. Asking
+a file with an ID that is not found in the `files.json` will return
+the HTTP status 404 (not found).
+
 ## Running the tests
 
 We default to use the Docker image for k6 since it's not carried by

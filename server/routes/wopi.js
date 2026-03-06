@@ -19,6 +19,10 @@ import files from './files.json' with { type: 'json' };
 router.get('/files/:fileId', async (req, res) => {
     console.log('file id: ' + req.params.fileId);
     let fileEntry = files[req.params.fileId];
+    if (typeof fileEntry == "undefined") {
+        res.sendStatus(404);
+        return;
+    }
     if (fileEntry?.path) {
         let filename = fileEntry.path;
         let stats = await fs.stat(filename);
@@ -56,6 +60,10 @@ router.get('/files/:fileId', async (req, res) => {
  */
 router.get('/files/:fileId/contents', async (req, res) => {
     let fileEntry = files[req.params.fileId];
+    if (typeof fileEntry == "undefined") {
+        res.sendStatus(404);
+        return;
+    }
     if (fileEntry?.path) {
         let filename = fileEntry.path;
 
@@ -80,14 +88,19 @@ router.get('/files/:fileId/contents', async (req, res) => {
  *  https://HOSTNAME/wopi/files/<document_id>/contents
  */
 router.post('/files/:fileId/contents', (req, res) => {
-	// we log to the console so that is possible
-	// to check that saving has triggered this wopi endpoint
-	console.log('wopi PutFile endpoint');
-	if (req.body) {
-		console.log(req.body.toString().length);
-		res.sendStatus(200);
-	} else {
-		console.log('Not possible to get the file content.');
-		res.sendStatus(404);
-	}
+    let fileEntry = files[req.params.fileId];
+    if (typeof fileEntry == "undefined") {
+        res.sendStatus(404);
+        return;
+    }
+    // we log to the console so that is possible
+    // to check that saving has triggered this wopi endpoint
+    console.log('wopi PutFile endpoint');
+    if (req.body) {
+        console.log(req.body.toString().length);
+        res.sendStatus(200);
+    } else {
+        console.log('Not possible to get the file content.');
+        res.sendStatus(404);
+    }
 });
