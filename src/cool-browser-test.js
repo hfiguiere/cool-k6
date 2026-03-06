@@ -57,13 +57,9 @@ export default async function () {
         let resp = await page.goto(wopiClientUrl.toString());
         pageLoadingTime.add(Date.now() - start);
 
-        const locator = page.locator('ul#main-menu');
+        const locator = page.locator('canvas#document-canvas');
         await locator.waitFor({state: 'visible'});
         frameLoadingTime.add(Date.now() - start);
-        let content = await locator.textContent();
-        check(content, {
-            "Menu is visible": content => content.startsWith('File'),
-        });
     } catch (error) {
         fail(`Browser iteration failed: ${error}`);
     } finally {
