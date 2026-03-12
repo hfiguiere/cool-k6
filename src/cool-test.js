@@ -4,6 +4,7 @@ import { Trend } from 'k6/metrics';
 
 import { getWopiClientUrl, getWopiSrc } from '../lib/wopi_discovery.js';
 import { CoolClientWs } from '../lib/cool_client_ws.js';
+import { wopiHost, wopiUrl } from './config.js';
 
 export const options = {
   iterations: 1,
@@ -15,9 +16,6 @@ const frameLoadingTime = new Trend('frame_loading_time', true);
 // entry point for the test script. It will be executed repeatedly in
 // "iterations" for the whole duration of the test.
 export default async function () {
-    let wopiUrl = __ENV['WOPI_URL'] || 'https://localhost:9980/';
-    let wopiHost = __ENV['WOPI_HOST'] || 'https://localhost:3000/';
-
     let wopiClient = await getWopiClientUrl(wopiUrl);
     let wopiSrc = getWopiSrc(wopiHost, 2);
 
