@@ -25,7 +25,8 @@ adding an entry to the JSON file `./server/routes/files.json`.
 
 It's a dictionary (JS object) where the key is the file id as passed
 in the WOPI source URL, and entries contain at least a `path`
-(relative to the current working directory or absolute).
+(relative to the current working directory or absolute). So for
+`https://WOPI_HOST/wopi/files/1` the entry is `"1"`.
 
 There are the various fields for an entry:
 
@@ -36,6 +37,25 @@ of the property, the file is server in editing mode.
 A key with an empty object return just a "Hello world" strigs. Asking
 a file with an ID that is not found in the `files.json` will return
 the HTTP status 404 (not found).
+
+Example:
+
+```JSON
+{
+    "1": {
+    },
+    "2": {
+        "path": "documents/writer-large.fodt",
+        "readonly": false,
+        "wopi": {
+            "EnableInsertRemoteImage": true,
+            "DisableInsertLocalImage": true,
+            "HidePrintOption": true,
+            "HideSaveOption": false
+        }
+    }
+}
+```
 
 ### Configuring static files
 
