@@ -1,10 +1,9 @@
 import http from 'k6/http';
-import exec from 'k6/execution';
 import { browser } from 'k6/browser';
 import { sleep, check, fail } from 'k6';
 import { Trend } from 'k6/metrics';
 
-import { getWopiClientUrl, getWopiSrc } from '../lib/wopi_discovery.js';
+import { checkWopi, getWopiClientUrl, getWopiSrc } from '../lib/wopi_discovery.js';
 import { wopiHost, wopiUrl } from './config.js';
 
 export const options = {
@@ -33,11 +32,7 @@ const pageLoadingTime = new Trend('page_loading_time', true);
 const frameLoadingTime = new Trend('frame_loading_time', true);
 
 export function setup() {
-
-    let res = http.get(wopiUrl.toString());
-    if (res.status !== 200) {
-        exec.test.abort(`Got unexpected status code ${res.status} when trying to setup. Exiting.`);
-    }
+    checkWopi(wopiHost, wopiUrl);
 }
 
 export default async function () {

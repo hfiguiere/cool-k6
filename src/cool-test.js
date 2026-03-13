@@ -2,7 +2,7 @@ import http from 'k6/http';
 import { sleep } from 'k6';
 import { Trend } from 'k6/metrics';
 
-import { getWopiClientUrl, getWopiSrc } from '../lib/wopi_discovery.js';
+import { checkWopi, getWopiClientUrl, getWopiSrc } from '../lib/wopi_discovery.js';
 import { CoolClientWs } from '../lib/cool_client_ws.js';
 import { wopiHost, wopiUrl } from './config.js';
 
@@ -11,6 +11,10 @@ export const options = {
 };
 
 const frameLoadingTime = new Trend('frame_loading_time', true);
+
+export function setup() {
+    checkWopi(wopiHost, wopiUrl);
+}
 
 // The default exported function is gonna be picked up by k6 as the
 // entry point for the test script. It will be executed repeatedly in
