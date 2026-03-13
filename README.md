@@ -18,7 +18,7 @@ pure NodeJS. `npm run server` will start it bound to port 3000.
 
 Running the server require Node 20.10 or later.
 
-### Configuring files
+### Configuring WOPI files
 
 You can configure files to serve from the WOPI Host. This is done by
 adding an entry to the JSON file `./server/routes/files.json`.
@@ -36,6 +36,33 @@ of the property, the file is server in editing mode.
 A key with an empty object return just a "Hello world" strigs. Asking
 a file with an ID that is not found in the `files.json` will return
 the HTTP status 404 (not found).
+
+### Configuring static files
+
+You can configure the server to serve static files from
+`https://WOPI_HOST/static/`. This is done by adding an entry to the JSON
+file `./server/routes/static_files.json`.
+
+Static files are used for tests like "inserting an image" or any other
+that would require an URL. It's like for WOPI files. The keys are the
+file names. So for `https://WOPI_HOST/static/image.png`, the entry is
+`"image.png"`.
+
+Each entry need:
+- `path`: Path to the file to serve.
+- `type`: An optional MIME type. If missing `application/octet-stream`
+  will be used.
+
+Example:
+
+```JSON
+{
+    "image.png": {
+        "path": "documents/image.png",
+        "type": "image/png"
+    }
+}
+```
 
 ## Running the tests
 

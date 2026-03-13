@@ -2,14 +2,40 @@ import express from 'express';
 import http from 'http';
 import https from 'https';
 import {DOMParser as Dom} from '@xmldom/xmldom';
+import * as fs from 'node:fs/promises';
 
 import xpath from 'xpath';
+
+import files from './static_files.json' with { type: 'json' };
 
 let router = express.Router();
 export default router;
 
 router.get('/', (req, res) => {
     res.render('index');
+});
+
+router.get('/static/:fileName', async (req, res) => {
+    // serve static files.
+    let fileName = req.params.fileName;
+    if (fileName && typeof files[fileName] !== "undefined") {
+        let file = files[fileName];
+        if (file?.path) {
+            let stats = await fs.stat(file.path);
+
+            if (file?.type) {
+                res.set('Content-Type', file.type);
+            }
+
+            let fileContent = await fs.readFile(file.path);
+            res.send(fileContent);
+            return;
+        }
+    }
+
+    let err = `File ${fileName} not found.`;
+    res.status(404).send(err);
+    console.log(err);
 });
 
 router.get('/collaboraUrl', (req, res) => {
