@@ -28,13 +28,14 @@ router.get('/files/:fileId', async (req, res) => {
         let stats = await fs.stat(filename);
 
         let wopi = Object.assign({
-	    BaseFileName: path.basename(filename),
-	    Size: stats.size,
-	    UserId: 1,
-	    UserCanWrite: !fileEntry.readonly,
-	}, fileEntry.wopi);
+            BaseFileName: path.basename(filename),
+            Size: stats.size,
+            UserId: 1,
+            UserCanWrite: !fileEntry.readonly,
+            IsAdminUser: false,
+        }, fileEntry.wopi);
 
-	res.json(wopi);
+        res.json(wopi);
 
         return;
     }
@@ -43,11 +44,12 @@ router.get('/files/:fileId', async (req, res) => {
     // the Size property is the length of the string
     // returned by the wopi GetFile endpoint
     res.json({
-	BaseFileName: 'test.txt',
-	Size: 11,
-	UserId: 1,
-	UserCanWrite: true,
-	EnableInsertRemoteImage: true,
+        BaseFileName: 'test.txt',
+        Size: 11,
+        UserId: 1,
+        UserCanWrite: true,
+        EnableInsertRemoteImage: true,
+        IsAdminUser: false,
     });
 });
 

@@ -84,6 +84,15 @@ Example:
 }
 ```
 
+### Default values
+
+By default the WOPI file server will set the following properties with
+values:
+
+- `UserId`: 1
+- `UserCanWrite`: true
+- `IsAdminUser`: false
+
 ## Running the tests
 
 We default to use the Docker image for k6 since it's not carried by
