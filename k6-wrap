@@ -1,8 +1,18 @@
 #!/bin/sh
 
+set -e
+
+if [ -z "$COOL_K6_SCREENSHOT_DIR" ]; then
+    COOL_K6_SCREENSHOT_DIR=screenshots
+fi
+
+mkdir -p "$COOL_K6_SCREENSHOT_DIR"
+chmod o+w "$COOL_K6_SCREENSHOT_DIR"
+
 docker run -v $PWD:/app:Z \
        -w /app --rm -i \
        -e WOPI_URL=$WOPI_URL \
        -e WOPI_HOST=$WOPI_HOST \
+       -e COOL_K6_SCREENSHOT_DIR=$COOL_K6_SCREENSHOT_DIR \
        grafana/k6:master-with-browser \
        "$@"

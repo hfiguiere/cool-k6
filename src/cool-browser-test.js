@@ -1,9 +1,15 @@
+/**
+ * This simple test loads a document in Collabora Online in the
+ * browser
+ */
+
 import http from 'k6/http';
 import { browser } from 'k6/browser';
 import { sleep, check, fail } from 'k6';
 import { Trend } from 'k6/metrics';
 
 import { checkWopi, getWopiClientUrl, getWopiSrc } from '../lib/wopi_discovery.js';
+import { screenshotPage } from '../lib/test_utils.js';
 import { wopiHost, wopiUrl } from './config.js';
 
 export const options = {
@@ -55,6 +61,7 @@ export default async function () {
         await locator.waitFor({state: 'visible'});
         frameLoadingTime.add(Date.now() - start);
     } catch (error) {
+        screenshotPage(page);
         fail(`Browser iteration failed: ${error}`);
     } finally {
         await page.close();

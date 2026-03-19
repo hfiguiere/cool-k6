@@ -102,7 +102,7 @@ This is currently tested with k6 version 1.5.x.
 
 ### Environment
 
-There are two environment variables used by the K6 tests.
+There are two required environment variables used by the K6 tests.
 
 - `WOPI_URL=https://<your_cool_host>:9980/`: `WOPI_URL` is set to the
 WOPI client (Collabora Online) URL. `your_cool_host` is the host on
@@ -116,6 +116,13 @@ K6 in a Docker container, it's unlikely to be localhost.
 
 The test will use default values, unlikely to be what you want.
 
+You can also optionnaly set the following:
+
+- `COOL_K6_SCREENSHOT_DIR`: This  is set to the directory  in which to
+write the screenshot  in case of failure in browser  tests. If running
+K6 in Docker, then care should be taken to ensure the directory can be
+written bu k6 user from inside docker. `k6-wrap` takes care of it.
+
 ### Running
 
 ```shell
@@ -124,6 +131,7 @@ docker run -v $PWD:/app:Z \
        -w /app --rm -i \
        -e WOPI_URL=$WOPI_URL \
        -e WOPI_HOST=$WOPI_HOST \
+       -e COOL_K6_SCREENSHOT_DIR=$COOL_K6_SCREENSHOT_DIR \
        grafana/k6:master-with-browser -v run --vus 1 \
        --summary-mode=compact \
        "$@"
@@ -150,6 +158,13 @@ them. Or use proper certificates everywhere.
 The `k6-run` wrapper will detect `NODE_TLS_REJECT_UNAUTHORIZED` as
 used by Node. If it is setp to `0`, the script will add the above
 options accordingly.
+
+### Diagnostics
+
+Existing browser tests will save a  screenshot of the page if the test
+fail.  This  allow having  an overview  if the page  in an  attempt to
+figure out  what is happening. Each  screenshot file name will  have a
+timestamp.
 
 ## License
 
