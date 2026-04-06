@@ -14,5 +14,5 @@ docker run -v $PWD:/app:Z \
        -e WOPI_URL=$WOPI_URL \
        -e WOPI_HOST=$WOPI_HOST \
        -e COOL_K6_SCREENSHOT_DIR=$COOL_K6_SCREENSHOT_DIR \
-       grafana/k6:master-with-browser \
+       grafana/k6:1.7.1-with-browser \
        "$@"

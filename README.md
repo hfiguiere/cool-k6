@@ -98,7 +98,7 @@ values:
 We default to use the Docker image for k6 since it's not carried by
 most distributions. But you can adapt this to other methods.
 
-This is currently tested with k6 version 1.5.x.
+This is currently tested with k6 version 1.7.1.
 
 ### Environment
 
@@ -132,7 +132,7 @@ docker run -v $PWD:/app:Z \
        -e WOPI_URL=$WOPI_URL \
        -e WOPI_HOST=$WOPI_HOST \
        -e COOL_K6_SCREENSHOT_DIR=$COOL_K6_SCREENSHOT_DIR \
-       grafana/k6:master-with-browser -v run --vus 1 \
+       grafana/k6:1.7.1-with-browser -v run --vus 1 \
        --summary-mode=compact \
        "$@"
 ```
