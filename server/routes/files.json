@@ -11,6 +11,14 @@
             "HideSaveOption": false
         }
     },
+    "3": {
+        "path": "documents/writer-large-edit.fodt",
+        "readonly": false
+    },
+    "4": {
+        "path": "documents/blank.fodt",
+        "readonly": false
+    },
     "5": {
         "path": "documents/large-mixed-10mb.odt",
         "readonly": false
