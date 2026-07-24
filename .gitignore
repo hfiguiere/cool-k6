@@ -1,2 +1,8 @@
 /node_modules/
 /dist/
+
+# perf/flamegraph run outputs (k6-flamegraph.py --out-dir defaults to profile-out)
+/profile-*/
+
+# Python bytecode cache
+__pycache__/
