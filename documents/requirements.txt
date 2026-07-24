@@ -1,0 +1,6 @@
+# Dependencies for gen-large-odt.py, which generates large-mixed-10mb.odt.
+# Install with: python3 -m pip install -r documents/requirements.txt
+odfpy
+matplotlib
+numpy
+Pillow

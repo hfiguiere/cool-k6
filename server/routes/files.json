@@ -10,5 +10,9 @@
             "HidePrintOption": true,
             "HideSaveOption": false
         }
+    },
+    "5": {
+        "path": "documents/large-mixed-10mb.odt",
+        "readonly": false
     }
 }
