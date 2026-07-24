@@ -9,10 +9,43 @@ fi
 mkdir -p "$COOL_K6_SCREENSHOT_DIR"
 chmod o+w "$COOL_K6_SCREENSHOT_DIR"
 
-docker run -v $PWD:/app:Z \
+IMAGE=grafana/k6:1.7.1-with-browser
+
+# The default bridge network fails to create a veth pair in some
+# environments ("operation not supported"). Probe it once with a throwaway
+# bridged container; if its networking setup fails, fall back to host
+# networking, which needs no veth pair and still reaches coolwsd / the WOPI
+# host on the host's own address. Set COOL_K6_DOCKER_NETWORK to force a
+# network (e.g. "host") and skip the probe.
+if [ -n "$COOL_K6_DOCKER_NETWORK" ]; then
+    NETWORK_OPT="--network $COOL_K6_DOCKER_NETWORK"
+else
+    NETWORK_OPT=""
+    probe=$(docker run --rm --network bridge "$IMAGE" version 2>&1) || true
+    if printf '%s' "$probe" | grep -qiE "set up container networking|veth|operation not supported"; then
+        echo "k6-wrap: docker bridge networking unavailable; using --network host" >&2
+        NETWORK_OPT="--network host"
+    fi
+fi
+
+docker run $NETWORK_OPT \
+       -v $PWD:/app:Z \
        -w /app --rm -i \
        -e WOPI_URL=$WOPI_URL \
        -e WOPI_HOST=$WOPI_HOST \
        -e COOL_K6_SCREENSHOT_DIR=$COOL_K6_SCREENSHOT_DIR \
-       grafana/k6:1.7.1-with-browser \
+       -e TYPE_STEP_MS \
+       -e STORY_REPEAT \
+       -e STORY_FONT \
+       -e STORY_FILE_ID \
+       -e LOAD_FILE_ID \
+       -e LOAD_PASSES \
+       -e LOAD_VUS \
+       -e LOAD_RAMP \
+       -e LOAD_HOLD \
+       -e LOAD_SHARED \
+       -e LOAD_STEP_MS \
+       -e LOAD_IMPORT_WAIT_MS \
+       -e LOAD_ITER_TIMEOUT_MS \
+       "$IMAGE" \
        "$@"
